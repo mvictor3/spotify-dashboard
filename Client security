@@ -1,0 +1,17 @@
+
+type CredentialConfig struct {
+  Client ID string
+  ClientSecret string
+}
+
+func LoadConfig()(*CredentialConfig, error){
+  config := &CredentialConfig{
+
+    ClientID: os.Getenv("CLIENT_ID"),
+    ClientSecret: os.Getenv("CLIENT_SECRET"),
+  }
+  if congig.ClientID == "" || config.ClientSecret == ""{
+    return nil, errors.New("required CLIENT_ID and CLIENT_SECRET, environment is not set")
+  }
+  return config, nil
+}
