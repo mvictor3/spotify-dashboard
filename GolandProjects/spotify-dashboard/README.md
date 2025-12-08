@@ -51,5 +51,6 @@ Frontend Setup (Vite + React)
 Running the project:
 Backend:
 - Run with go run main.go
+
 Frontend:
 - Run npm run dev
