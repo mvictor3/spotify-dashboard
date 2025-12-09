@@ -57,6 +57,7 @@ Frontend:
 - Run npm run dev
 
 Favoriting Songs:
+
 Favoriting is not yet implement in Frontend UI
 
 To favorite a song via API:
