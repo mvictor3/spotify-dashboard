@@ -58,6 +58,7 @@ Frontend:
 
 Favoriting Songs:
 Favoriting is not yet implement in Frontend UI
+
 To favorite a song via API:
 - Use curl to favroite a song in the CMD terminal of backend using the track name
 - Use this following command in your terminal:
