@@ -1,5 +1,24 @@
 Spotify Dashboard Setup
 
+About:
+A Music Searching App that lets you search for tracks and save favorites.
+
+Features:
+- Search for music using Spotify's API
+- Save favorite tracks to PostgreSQL database
+- Status monitoring page
+- FULL REST API backend
+
+Current Status:
+- Backend: Fully functional with search and favorite endpoints
+- Frontend: Search interface implemented
+- Favoriting UI is not yet connected (works via API/curl- see at the bottom)
+
+Tech Stack:
+- Backend: Go, PostgreSQL
+- Frontend: React, Vite
+- API: Spotify Web API
+
 PostgreSQL Configuration
 This project uses PostgreSQL. You can use any PostgreSQL user and database name.
 
@@ -8,12 +27,12 @@ Default setup (if you just installed PostgreSQL):
 - Database: postgres (default database)
 - Port: 5432 (default port)
 
-Custom setup(optional, project uses default):
+Custom setup (optional, project uses default):
 - Use any existing PostgreSQL user
 - Create a new database: CREATE DATABASE spotify_dashboard;
 - Update environment variables accordingly
 
-Spotfiy Developer API Setup:
+Spotify Developer API Setup:
 - Go to https://developer.spotify.com/ and setup an account
 - Create a project 
 - Name it Wrapped
@@ -42,27 +61,27 @@ Don't have PostgreSQL?
 - Remember the password you set during installation
 - Use postgres as the user (default)
 
-Frontend Setup (Vite + React)
-- npm create vite@latest . -- --template react
+Frontend Setup (React)
 - npm install
-- npm install react-router-dom
 
 
 Running the project:
 
 Backend:
 - Run with go run main.go
+- runs localhost:8080
 
 Frontend:
 - Run npm run dev
+- runs localhost:5173
 
 Favoriting Songs:
 
-Favoriting is not yet implement in Frontend UI
+Favoriting is not yet implemented in Frontend UI
 
 To favorite a song via API:
-- Use curl to favroite a song in the CMD terminal of backend using the track name
+- Use curl to favorite a song in the CMD terminal of backend using the track name
 - Use this following command in your terminal:
-- example: curl -X POST http://localhost:8080/favorites/save \ -H "Content-Type: application/json" \ -d '{"track_id":"Levitating Dua Lipa"}'
+- example: curl -X POST http://localhost:8080/favorites/save -H "Content-Type: application/json" -d "{\"track_id\":\"Levitating Dua Lipa\"}"
 
 Make sure your backend server is running on localhost:8080 first.
