@@ -55,3 +55,12 @@ Backend:
 
 Frontend:
 - Run npm run dev
+
+Favoriting Songs:
+Favoriting is not yet implement in Frontend UI
+To favorite a song via API:
+- Use curl to favroite a song in the CMD terminal of backend using the track name
+- Use this following command in your terminal:
+- example: curl -X POST http://localhost:8080/favorites/save \ -H "Content-Type: application/json" \ -d '{"track_id":"Levitating Dua Lipa"}'
+
+Make sure your backend server is running on localhost:8080 first.
