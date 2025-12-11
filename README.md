@@ -1,6 +1,6 @@
 Spotify Dashboard Setup
 
-Live Demo:
+Live Demo: 
 https://spotify-dashboard-phi.vercel.app/
 
 About:
