@@ -15,7 +15,7 @@ const Favorites = () => {
     const [favoritesData, setFavoritesData] = useState(null)
 
     const fetchFavorites = () => {
-        fetch('/favorites')
+        fetch('https://spotify-dashboard-production.up.railway.app/favorites')
             .then(res => res.json())
             .then(data => setFavoritesData(data))
     }
@@ -25,7 +25,7 @@ const Favorites = () => {
     }, [])
 
     const handleDeleteFavorite = (trackId) => {
-        fetch('/favorites/delete', {
+        fetch('https://spotify-dashboard-production.up.railway.app/favorites/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -82,13 +82,13 @@ const Tracks = () => {
     const [searchQuery, setSearchQuery] = useState('Homecoming')
 
     useEffect(() => {
-        fetch(`/spotify/tracks?q=${searchQuery}`)
+        fetch(`https://spotify-dashboard-production.up.railway.app/spotify/tracks?q=${searchQuery}`)
             .then(res => res.json())
             .then(data => setTracksData(data))
     }, [searchQuery])
 
     const handleAddFavorite = (track) => {
-        fetch('/favorites/save', {
+        fetch('https://spotify-dashboard-production.up.railway.app/favorites/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -157,7 +157,7 @@ const Tracks = () => {
 const Status = () => {
     const [statusData, setStatusData] = useState(null)
     useEffect(() => {
-        fetch('/spotify/status')
+        fetch('https://spotify-dashboard-production.up.railway.app/spotify/status')
             .then(res => res.json())
             .then(data => setStatusData(data))
     }, [])
