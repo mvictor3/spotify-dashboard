@@ -13,11 +13,33 @@ const Home = () => {
 
 const Favorites = () => {
     const [favoritesData, setFavoritesData] = useState(null)
-    useEffect(() => {
+
+    const fetchFavorites = () => {
         fetch('/favorites')
             .then(res => res.json())
             .then(data => setFavoritesData(data))
+    }
+
+    useEffect(() => {
+        fetchFavorites()
     }, [])
+
+    const handleDeleteFavorite = (trackId) => {
+        fetch('/favorites/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ track_id: trackId })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Deleted:', data)
+                // Refresh the favorites list
+                fetchFavorites()
+            })
+            .catch(err => console.error('Delete failed:', err))
+    }
 
     return (
         <div>
@@ -30,6 +52,21 @@ const Favorites = () => {
                             <h3>{track.name}</h3>
                             <p><strong>Artist:</strong> {track.artists[0]?.name}</p>
                             <p><strong>Album:</strong> {track.album?.name}</p>
+                            <button
+                                onClick={() => handleDeleteFavorite(track.id)}
+                                style={{
+                                    background: '#e74c3c',
+                                    padding: '8px 16px',
+                                    borderRadius: '20px',
+                                    border: 'none',
+                                    color: 'white',
+                                    cursor: 'pointer',
+                                    marginTop: '0.5rem',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                🗑️
+                            </button>
                         </div>
                     ))}
                 </div>
@@ -50,6 +87,29 @@ const Tracks = () => {
             .then(data => setTracksData(data))
     }, [searchQuery])
 
+    const handleAddFavorite = (track) => {
+        fetch('/favorites/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: track.id,
+                name: track.name,
+                artists: track.artists,
+                album: track.album,
+                duration_ms: track.duration_ms,
+                preview_url: track.preview_url
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Added to favorites:', data)
+                alert('Added to favorites!')
+            })
+            .catch(err => console.error('Save failed:', err))
+    }
+
     return (
         <div>
             <h1>Search Tracks</h1>
@@ -69,6 +129,21 @@ const Tracks = () => {
                             <p><strong>Artist:</strong> {track.artists[0].name}</p>
                             <p><strong>Album:</strong> {track.album.name}</p>
                             <p><strong>Popularity:</strong> {track.popularity}</p>
+                            <button
+                                onClick={() => handleAddFavorite(track)}
+                                style={{
+                                    background: '#1db954',
+                                    padding: '8px 16px',
+                                    borderRadius: '20px',
+                                    border: 'none',
+                                    color: 'white',
+                                    cursor: 'pointer',
+                                    marginTop: '0.5rem',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                ❤️
+                            </button>
                         </div>
                     ))}
                 </div>

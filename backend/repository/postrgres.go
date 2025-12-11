@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"spotify-dashboard/backend/models"
 
@@ -140,4 +141,16 @@ func (r *FavoriteRepository) GetFavorites() ([]models.Favorite, error) {
 
 	}
 	return favorites, rows.Err()
+}
+
+func (r *FavoriteRepository) DeleteTrackAsFavorite(trackID string) error {
+	_, err := r.db.Exec(
+		`DELETE FROM favorites 
+				WHERE spotify_track_id = $1`, trackID)
+	if err != nil {
+		log.Printf("Error deleting favorites: '%s' : %v", trackID, err)
+		return fmt.Errorf("could not delete favorite: %w", err)
+
+	}
+	return nil
 }

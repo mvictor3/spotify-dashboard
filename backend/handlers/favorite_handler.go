@@ -21,8 +21,37 @@ func NewFavoriteHandler(spotify *services.SpotifyService, repo *repository.Favor
 }
 
 func (h *FavoriteHandler) SaveFavorite(w http.ResponseWriter, r *http.Request) {
-	
+
 	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var favorite models.Favorite
+	if err := json.NewDecoder(r.Body).Decode(&favorite); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	if favorite.ID == "" {
+		http.Error(w, "track id is required", http.StatusBadRequest)
+		return
+	}
+
+	if err := h.favoriteRepo.SaveTrackAsFavorite(favorite); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "saved",
+		"track":  favorite.Title,
+	})
+}
+
+func (h *FavoriteHandler) DeleteFavoriteTrack(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
@@ -40,36 +69,15 @@ func (h *FavoriteHandler) SaveFavorite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tracks, err := h.spotifyService.SearchTracks(request.TrackID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if len(tracks) == 0 {
-		http.Error(w, "Track not found", http.StatusNotFound)
-		return
-	}
-
-	track := tracks[0]
-	favorite := models.Favorite{
-		ID:         track.ID,
-		Title:      track.Title,
-		Artists:    track.Artists,
-		Album:      track.Album,
-		DurationMs: track.DurationMs,
-		PreviewURL: track.PreviewURL,
-	}
-
-	if err := h.favoriteRepo.SaveTrackAsFavorite(favorite); err != nil {
+	if err := h.favoriteRepo.DeleteTrackAsFavorite(request.TrackID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status": "saved",
-		"track":  favorite.Title,
+		"status": "deleted",
+		"track":  request.TrackID,
 	})
 }
 

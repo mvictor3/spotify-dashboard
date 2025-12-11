@@ -40,6 +40,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Spotify API - Try: http://localhost:8080/spotify/tracks?q=Levitating")) // Added closing )
 	})
+	http.HandleFunc("/favorites/delete", favoriteHandler.DeleteFavoriteTrack)
 	http.HandleFunc("/favorites", favoriteHandler.GetFavorite)
 	http.HandleFunc("/favorites/save", favoriteHandler.SaveFavorite)
 	http.HandleFunc("/spotify/status", spotifyHandler.HealthCheck)
