@@ -9,6 +9,20 @@ import (
 	"spotify-dashboard/backend/services"
 )
 
+func enableCORS(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next(w, r)
+	}
+}
 func main() {
 	fmt.Println("🎬 Starting main.go...")
 	config, err := services.LoadConfig()
@@ -37,14 +51,14 @@ func main() {
 	favoriteHandler := handlers.NewFavoriteHandler(spotifyService, favRepo)
 	spotifyHandler := handlers.NewSpotifyHandler(spotifyService)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", enableCORS(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Spotify API - Try: http://localhost:8080/spotify/tracks?q=Levitating")) // Added closing )
-	})
-	http.HandleFunc("/favorites/delete", favoriteHandler.DeleteFavoriteTrack)
-	http.HandleFunc("/favorites", favoriteHandler.GetFavorite)
-	http.HandleFunc("/favorites/save", favoriteHandler.SaveFavorite)
-	http.HandleFunc("/spotify/status", spotifyHandler.HealthCheck)
-	http.HandleFunc("/spotify/tracks", spotifyHandler.ShowTracks)
+	}))
+	http.HandleFunc("/favorites/delete", enableCORS(favoriteHandler.DeleteFavoriteTrack))
+	http.HandleFunc("/favorites", enableCORS(favoriteHandler.GetFavorite))
+	http.HandleFunc("/favorites/save", enableCORS(favoriteHandler.SaveFavorite))
+	http.HandleFunc("/spotify/status", enableCORS(spotifyHandler.HealthCheck))
+	http.HandleFunc("/spotify/tracks", enableCORS(spotifyHandler.ShowTracks))
 	fmt.Println("Server running on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal("Server failed:", err)
