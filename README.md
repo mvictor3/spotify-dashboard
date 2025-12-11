@@ -1,5 +1,8 @@
 Spotify Dashboard Setup
 
+Live Demo:
+https://spotify-dashboard-phi.vercel.app/
+
 About:
 A Music Searching App that lets you search for tracks and save favorites.
 
