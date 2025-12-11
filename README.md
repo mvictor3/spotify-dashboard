@@ -1,21 +1,36 @@
 Spotify Dashboard Setup
 
+About:
+A Music Searching App that lets you search for tracks and save favorites.
+
+Features:
+- Search for music using Spotify's API
+- Save favorite tracks to PostgreSQL database
+- Status monitoring page
+- FULL REST API backend
+
+Current Status:
+- Backend: Fully functional with search, favorite and delete endpoints
+- Frontend: Complete UI with search, favorites, and delete functionality
+- Database: PostgreSql integration with proper framework
+
+Tech Stack:
+- Backend: Go, PostgreSQL
+- Frontend: React, Vite
+- API: Spotify Web API
+
 PostgreSQL Configuration
 This project uses PostgreSQL. You can use any PostgreSQL user and database name.
 
 Default setup (if you just installed PostgreSQL):
+If you just installed PostgreSQL, use the default configuration:
 - User: postgres (default superuser)
 - Database: postgres (default database)
 - Port: 5432 (default port)
 
-Custom setup(optional, project uses default):
-- Use any existing PostgreSQL user
-- Create a new database: CREATE DATABASE spotify_dashboard;
-- Update environment variables accordingly
-
-Spotfiy Developer API Setup:
+Spotify Developer API Setup:
 - Go to https://developer.spotify.com/ and setup an account
-- Create a project 
+- Create a project
 - Name it Wrapped
 - Description can be what you please
 - Make http://127.0.0.1:8080 your website
@@ -35,21 +50,21 @@ Set these up for your spotify auth:
 - set SPOTIFY_CLIENT_ID=your client id
 - set SPOTIFY_CLIENT_SECRET=your client secret
 
-
 Don't have PostgreSQL?
 - Download: https://www.postgresql.org/download/
 - Install with default settings
 - Remember the password you set during installation
 - Use postgres as the user (default)
 
-Frontend Setup (Vite + React)
-- npm create vite@latest . -- --template react
+Frontend Setup (React)
 - npm install
-- npm install react-router-dom
-
 
 Running the project:
+
 Backend:
 - Run with go run main.go
+- runs localhost:8080
+
 Frontend:
 - Run npm run dev
+- runs localhost:5173
